@@ -1,6 +1,13 @@
 const express = require('express')
+const connectDB = require('./config/db')
 
 const app = express()
+
+// Connect Database
+connectDB()
+
+// Init Middlewate
+app.use(express.json({ extended: true }))
 
 app.get('/', (req, res) => res.json({msg: 'Welcome to the Contact Keeper API'}))
 
