@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('config')
 const User = require('../models/User')
+// able to use check validator to check certain fiels are sent to the request
 const { check, validationResult } = require('express-validator')
 
 // @route   @POST api/users
@@ -28,7 +29,7 @@ router.post('/', [
         // check if user exists in the database
         let user = await User.findOne({ email })
 
-        // return message to state user alread exits
+        // return message to state user already exits
         if(user) {
             return res.status(400).json({ msg: 'User already exists' })
         }
@@ -40,7 +41,7 @@ router.post('/', [
             password
         })
 
-        //general sale
+        //general salt
         const salt = await bcrypt.genSalt(10)
 
         // set password with hash, salt 
@@ -50,7 +51,7 @@ router.post('/', [
         await user.save()
         
         // set payload - payload is the object you want to send in the token
-        // with this ID, we can get specific data like all the contact they have stored
+        // with this ID, we can get specific data like all the contacts they have stored
         const payload = {
             user: {
                 id: user.id
