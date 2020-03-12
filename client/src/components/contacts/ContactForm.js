@@ -1,7 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
+import ContactContext from '../../context/contact/ContactContext'
 
 const ContactForm = () => {
- 
+
+  const contactContext = useContext(ContactContext)
+  
+  const { addContact, updateContact, clearCurrent, current } = contactContext
+
+  useEffect(() => {
+    if(current !== null) {
+      setContact(current) 
+    } else {
+      setContact({
+        name: '',
+        email: '',
+        phone: '',
+        type: 'personal'
+      })
+    }
+  }, [contactContext, current])
+
+  // @param1 = contact is the form itself, so when the form updates so do these values
   const [contact, setContact] = useState({
     name: '',
     email: '',
@@ -13,20 +32,45 @@ const ContactForm = () => {
 
   const onChange = e => setContact({ ...contact, [e.target.name]: e.target.value })
 
+  const onSubmit = e => {
+    e.preventDefault()
+    if(current === null) {
+      addContact(contact)
+    } else {
+      updateContact(contact)
+      clearCurrent()
+    }
+    setContact({
+      name: '',
+      email: '',
+      phone: '',
+      type: 'personal'
+    })
+  }
+
+  const clearAll = () => {
+    clearCurrent()
+  }
+
   return (
-    <form>
-      <h2 className="text-primary">Add Contact</h2>
+    <form onSubmit={onSubmit}>
+      <h2 className="text-primary">{current ? 'Edit Contact' : 'Add Contact'}</h2>
       <input type="text" placeholder="Name" name="name" value={name} onChange={onChange} />
       <input type="email" placeholder="Email" name="email" value={email} onChange={onChange} />
       <input type="text" placeholder="Phone" name="phone" value={phone} onChange={onChange} />
       <h5>Contact Type</h5>
-      <input type="radio" name="type" value="personal" checked={type === 'personal'} />
+      <input type="radio" name="type" value="personal" checked={type === 'personal'} onChange={onChange} />
       Personal{' '}
-      <input type="radio" name="type" value="professional" checked={type === 'professional'} />
+      <input type="radio" name="type" value="professional" checked={type === 'professional'} onChange={onChange} />
       Professional{' '}
       <div>
-      <input type="submit" value="Add Contact" className="btn btn-primary btn-block"/>
+      <input type="submit" value={current ? 'Update Contact' : 'Add Contact'} className="btn btn-primary btn-block"/>
       </div>
+      {current &&(
+        <div>
+          <button className="btn btn-light btn-block" onClick={clearAll}>Clear</button>
+        </div>
+      )}
     </form>
   )
 }
