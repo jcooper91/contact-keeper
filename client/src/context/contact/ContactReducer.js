@@ -26,7 +26,20 @@ import { ADD_CONTACT, DELETE_CONTACT, SET_CURRENT, CLEAR_CURRENT, UPDATE_CONTACT
              return {
                  ...state,
                  current: null
-             }    
+             }
+         case FILTER_CONTACTS:
+             return {
+                 ...state,
+                 filtered: state.contacts.filter(contact => {
+                     const regex = new RegExp(`${action.payload}`, 'gi')
+                     return contact.name.match(regex) || contact.email.match(regex)
+                 })
+             }
+         case CLEAR_FILTER:
+             return {
+                 ...state,
+                 filtered: null
+             }            
          default:
              return state
      }
