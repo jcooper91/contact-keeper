@@ -29,7 +29,7 @@ const AuthState = props => {
         }
       
         try {
-            const res = axios.post('/api/post', formData, config)
+            const res = axios.post('/api/users', formData, config)
           
             console.log(res)
             dispatch({
@@ -39,7 +39,7 @@ const AuthState = props => {
         } catch (err) {
             dispatch({
                 type: REGISTER_FAIL,
-                paylad: err.response.data.msg
+                payload: err.response.data.msg
             })
         }
     } 
