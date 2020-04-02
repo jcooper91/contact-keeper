@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react'
 import AlertContext from '../../context/alert/AlertContext'
 import AuthContext from '../../context/auth/AuthContext'
-import authContext from '../../context/auth/AuthContext';
 
 const Register = () => {
 
@@ -18,7 +17,6 @@ const authContext = useContext(AuthContext)
   const { name, email, password, password2 } = user
 
   const { setAlert } = alertContext
-
   const { register } = authContext
 
   const onChange = e => setUser({ ...user, [e.target.name]: e.target.value })

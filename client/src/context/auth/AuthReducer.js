@@ -17,7 +17,7 @@ export default (state, action) => {
         isAuthenticated: false, 
         loading: false,
         user: null,
-        error: action.payload.error
+        error: action.payload
       }
   
     default:
